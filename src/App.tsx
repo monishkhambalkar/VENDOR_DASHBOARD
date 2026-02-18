@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Loader from "./common/Loader";
-import PageTitle from "./components/PageTitle";
-import SignIn from "./pages/Authentication/SignIn";
-import SignUp from "./pages/Authentication/SignUp";
-import Calendar from "./pages/Calendar";
-import Chart from "./pages/Chart";
-import ECommerce from "./pages/Dashboard/ECommerce";
-import FormElements from "./pages/Form/FormElements";
-import FormLayout from "./pages/Form/FormLayout";
-import Profile from "./pages/Profile";
-import ProfileEdit from "./pages/EditProfile";
-import Products from "./pages/Tables";
-import Alerts from "./pages/UiElements/Alerts";
-import Buttons from "./pages/UiElements/Buttons";
-import AccountSetting from "./pages/AccountSetting";
-import AddProduct from "./components/Tables/AddProduct";
-import UpdateProduct from "./components/Tables/UpdateProduct";
-import Category from "./pages/Category";
-import ViewProduct from "./components/Tables/ViewProduct";
-import PrivateRoute from "./pages/UiElements/PrivateRoute";
 import "react-notifications/lib/notifications.css";
-import ChatUI from "./chat_app/ChatApp";
+const Loader = lazy(()=> import('./common/Loader'));
+const PageTitle = lazy(()=> import('./components/PageTitle'));
+const SignIn = lazy(()=> import('./pages/Authentication/SignIn'));
+const SignUp = lazy(()=> import('./pages/Authentication/SignUp'));
+const Calendar = lazy(()=> import('./pages/Calendar'));
+const Chart = lazy(()=> import('./pages/Chart'));
+const ECommerce = lazy(()=> import('./pages/Dashboard/ECommerce'));
+const FormElements = lazy(()=> import('./pages/Form/FormElements'));
+const FormLayout = lazy(()=> import('./pages/Form/FormLayout'));
+const Profile = lazy(()=> import('./pages/Profile'));
+const ProfileEdit = lazy(()=> import('./pages/EditProfile'));
+const Products = lazy(()=> import('./pages/Tables'));
+const Alerts = lazy(()=> import('./pages/UiElements/Alerts'));
+const Buttons = lazy(()=> import('./pages/UiElements/Buttons'));
+const AccountSetting = lazy(()=> import('./pages/AccountSetting'));
+const AddProduct = lazy(()=> import('./components/Tables/AddProduct'));
+const UpdateProduct = lazy(()=> import('./components/Tables/UpdateProduct'));
+const Category = lazy(()=> import('./pages/Category'));
+const ViewProduct = lazy(()=> import('./components/Tables/ViewProduct'));
+const PrivateRoute = lazy(()=> import('./pages/UiElements/PrivateRoute'));
+const ChatUI = lazy(()=> import('./chat_app/ChatApp'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,6 +39,7 @@ function App() {
     <Loader />
   ) : (
     <>
+    <Suspense fallback={<Loader/>}>
       <Routes>
         <Route
           index
@@ -203,6 +204,7 @@ function App() {
           }
         />
       </Routes>
+      </Suspense>
     </>
   );
 }
