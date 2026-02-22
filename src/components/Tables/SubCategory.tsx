@@ -189,13 +189,34 @@ const SubCategories = () => {
   // FOR ADD SUBCATEGORY
   const [formAddSubCategory, setFormAddSubCategory] = useState({
     iCategoryIDForAdd: "",
+    sCategoryName: "",
     sNameAddSubCategory: "",
   });
 
   const handleAddSubCategoryInput = (event) => {
     const { name, value } = event.target;
-    setFormAddSubCategory({ ...formAddSubCategory, [name]: value });
+
+    setFormAddSubCategory((prev) => {
+      // ONLY when category changes
+      if (name === "iCategoryIDForAdd") {
+
+        const selectedCategory = categoryList.find(
+          (cat) => cat._id === value
+        );
+        return {
+          ...prev,
+          iCategoryIDForAdd: value,
+          sCategoryName: selectedCategory?.category_name || "",
+        };
+      }
+      // NORMAL INPUTS
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   };
+
 
   const handleSubmitAddSubCategory = async (event) => {
     event.preventDefault();
@@ -207,6 +228,8 @@ const SubCategories = () => {
       alertNotificationFunction("info", "Please add Sub Category");
       return false;
     }
+
+    console.log("formAddSubCategory ", formAddSubCategory)
 
     const response = await axios.post(
       `${config.VENDOR_BASE_URL}/subCategory/add-sub-category`,
@@ -222,6 +245,7 @@ const SubCategories = () => {
       setIsAddSubCategoryModalOpen(false);
       setFormAddSubCategory({
         iCategoryIDForAdd: "",
+        sCategoryName: "",
         sNameAddSubCategory: "",
       });
     }

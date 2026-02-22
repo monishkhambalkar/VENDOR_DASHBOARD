@@ -3,6 +3,8 @@ import ProductBulkUploadModal from "./ProductBulkUploadModal";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "../../config/config";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import {
   NotificationContainer,
   NotificationManager,
@@ -22,11 +24,15 @@ const TableTwo = () => {
   const [totalProductPages, setTotalProductPages] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(5);
 
+  const userData = useSelector((state: RootState) => state.auth.user);
+
+  // const accessToken = userData ? userData.accessToken : null;
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.post(
-          `${config.VENDOR_BASE_URL}/product/select-product?page=${currentProductPage}&limit=${productsPerPage}&search=${productSearch}`
+          `${config.VENDOR_BASE_URL}/product/select-product?vendorId=${userData.user}&page=${currentProductPage}&limit=${productsPerPage}&search=${productSearch}`
         );
         if (response.status == 200) {
           setProductList(response.data.products);

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import DefaultLayout from "../../layout/DefaultLayout";
 import React, { useEffect, useState } from "react";
 import config from "../../config/config";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 import {
   NotificationContainer,
@@ -15,9 +17,9 @@ const AddProduct = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
 
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjVhZmViODI3OTM0YzRkNDI3NzVkZmYiLCJpYXQiOjE3MjE3NzAxMTgsImV4cCI6MTcyMjM3NDkxOH0.CMzIWRfGpj53bwJ6ieQhV11ubu9BoxvDftnoDIFqmr0";
+  const userData = useSelector((state: RootState) => state.auth.user);
 
+  const accessToken = userData ? userData.accessToken : null;
   useEffect(() => {
     const fetchCategoryData = async () => {
       const response = await axios.post(
@@ -112,8 +114,9 @@ const AddProduct = () => {
     showLoader();
 
     try {
+      // console.log("User Data:", JSON.parse(localStorage.getItem('')));
       const response = await axios.post(
-        `${config.VENDOR_BASE_URL}/product/add-product`,
+        `${config.VENDOR_BASE_URL}/product/add-product/${userData.user}`,
         formDataToSend,
         {
           headers: {
