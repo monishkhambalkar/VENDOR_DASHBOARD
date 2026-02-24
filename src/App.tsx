@@ -22,8 +22,14 @@ const Category = lazy(()=> import('./pages/Category'));
 const ViewProduct = lazy(()=> import('./components/Tables/ViewProduct'));
 const PrivateRoute = lazy(()=> import('./pages/UiElements/PrivateRoute'));
 const ChatUI = lazy(()=> import('./chat_app/ChatApp'));
+import { useSelector } from "react-redux";
+import { RootState } from "../src/redux/store";
 
 function App() {
+
+  const userData = useSelector((state: RootState) => state.auth.user);
+  console.log("app surdata ", userData)
+
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
 
@@ -95,15 +101,17 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/Category"
-          element={
-            <PrivateRoute>
-              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Category />
-            </PrivateRoute>
-          }
-        />
+        {userData?.user_type === "admin" && (
+          <Route
+            path="/Category"
+            element={
+              <PrivateRoute>
+                <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <Category />
+              </PrivateRoute>
+            }
+          />
+        )}
         <Route
           path="/Profile-edit/:id"
           element={

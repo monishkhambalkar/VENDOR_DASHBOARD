@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.svg';
+import { useSelector } from "react-redux";
+import { RootState } from "../src/redux/store";
+
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -9,6 +12,9 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+
+  const userData = useSelector((state: RootState) => state.auth.user);
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -427,6 +433,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Products
                 </NavLink>
               </li>
+              {userData?.user_type === "admin" && (
               <li>
                 <NavLink
                   to="/category"
@@ -451,6 +458,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Category
                 </NavLink>
               </li>
+              )}
               {/* <!-- Menu Item Tables --> */}
 
               {/* <!-- Menu Item Settings --> */}
