@@ -21,6 +21,8 @@ export const loginUser = createAsyncThunk(
         body: JSON.stringify(formData),
       });
 
+      console.log("USERS LOGIN DATA ", response);
+
       if (!response.ok) {
         throw new Error("Login failed");
       }

@@ -10,10 +10,15 @@ import DefaultLayout from "../../layout/DefaultLayout";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
 
 const ECommerce: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
-  console.log("user ", user);
+  let navigate = useNavigate();
+  const userData = useSelector((state: RootState) => state.auth.user);
+  if (userData == null) {
+    navigate("/auth/signin");  
+  }
+
 
   return (
     <DefaultLayout>

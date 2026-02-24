@@ -5,6 +5,7 @@ import axios from "axios";
 import config from "../../config/config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
 import {
   NotificationContainer,
   NotificationManager,
@@ -19,10 +20,10 @@ const TableTwo = () => {
   const [productSearch, setProductSearch] = useState("");
   const [deleteProductSuccess, setDeleteProductSuccess] = useState(false);
   const [addProductSuccess, setAddProductSuccess] = useState(false);
-
   const [currentProductPage, setCurrentProductPage] = useState(1);
   const [totalProductPages, setTotalProductPages] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(5);
+  let navigate = useNavigate();
 
   const userData = useSelector((state: RootState) => state.auth.user);
 
@@ -31,6 +32,10 @@ const TableTwo = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        console.log(userData)
+        if (userData == null) {
+          navigate("/auth/signin");  
+        }
         const response = await axios.post(
           `${config.VENDOR_BASE_URL}/product/select-product?vendorId=${userData.user}&page=${currentProductPage}&limit=${productsPerPage}&search=${productSearch}`
         );
